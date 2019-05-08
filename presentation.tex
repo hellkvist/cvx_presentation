@@ -1,0 +1,81 @@
+\documentclass{beamer}
+\usetheme{default}
+
+\title{Interior-Point Method for Nuclear Norm Approximation with Application to System Identification}
+\author{Author: Zhang Liu and Lieven Vandenberghe \\ \footnotesize Presentation by: Martin Hellkvist}
+
+\newcommand{\mA}{\mathcal{A}}
+
+\begin{document}
+\begin{frame}[plain]
+    \maketitle
+\end{frame}
+\begin{frame}{Summary}
+	\begin{itemize}
+		\item Nuclear Norm: $ ||X||_* =$ sum of singular values
+		\item $ \min ||X||_* $ typically has low rank solutions
+		\begin{itemize}
+			\item Can be cast as Semidefinite Program (SDP)
+		\end{itemize}
+		\item $ \min \text{rank}(X) $ is NP-hard
+		\begin{itemize}
+			\item System Identification
+			\item Machine Learning
+			\item Computer Vision
+		\end{itemize}
+		\item Contribution:
+		\begin{itemize}
+			\item Describe a more efficient interior-point method for high order problems with the structure that follows $ ||\cdot||_* $
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Nuclear Norm Approximation Problem}
+	\begin{equation}
+	\begin{split}
+		&\text{minimize}~|| \mA (x) - B||_* \\
+		&B \in \mathbb{R}^{p\times q}\\
+		&\mA(x) = x_1A_1+x_2A_2+\dots+x_nA_n
+	\end{split}
+	\end{equation}
+	Can be cast as
+	\begin{equation}
+	\begin{split}
+		&\text{minimize}~~~(\mathbf{tr}U + \mathbf{tr}V)/2\\
+		&\text{subject to}~~\begin{bmatrix}
+		U & (\mA(x)-B)^T\\
+		\mA(x) - B & V
+		\end{bmatrix} \succeq 0
+	\end{split}
+	\end{equation}
+	Where $ U = U^T \in \mathbb{R}^{q\times q}$ and $ V=V^T \in \mathbb{R}^{p \times p} $ are new variables, and the problem is an SDP which is very difficult to solve for $ q \approx 100 $ and $ p\approx 100 $ for general purpose interior-point methods
+\end{frame}
+
+\begin{frame}{Custom Interior-Point Method}
+Exploiting the structure of 
+	\begin{equation}
+	\begin{split}
+		&\text{minimize}~~~(\mathbf{tr}U + \mathbf{tr}V)/2\\
+		&\text{subject to}~~\begin{bmatrix}
+		U & (\mA(x)-B)^T\\
+		\mA(x) - B & V
+		\end{bmatrix} \succeq 0
+	\end{split}
+	\end{equation}
+We need to solve the following linear equation system
+	\begin{equation}
+	\mA_{\text{adj}}(\Delta Z) = r, ~~ \begin{bmatrix}
+	\Delta U & \mA(\Delta x)^T\\
+	\mA(\Delta x) & \Delta V
+	\end{bmatrix}+ T \begin{bmatrix}
+	0 & \Delta Z^T\\
+	\Delta Z & 0
+	\end{bmatrix}T = R
+	\end{equation}
+	which can be solved by first finding $ \Delta x $
+	\begin{equation}
+		\tilde{\mA}_\text{adj}(\mathcal{S}^{-1}(\tilde{\mA}(\Delta x)))=\tilde{\mA}_\text{adj}(\mathcal{S}^{-1}(\tilde{R}_{21})) -r
+	\end{equation}
+	which gives $ \Delta Z $ and in turn $ \Delta U $ and $ \Delta V $
+\end{frame}
+\end{document}
