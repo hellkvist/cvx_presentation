@@ -1,5 +1,7 @@
 \documentclass{beamer}
 \usetheme{default}
+\usepackage{mathtools}
+\setbeamertemplate{footline}[frame number]
 
 \title{Interior-Point Method for Nuclear Norm Approximation with Application to System Identification}
 \author{Author: Zhang Liu and Lieven Vandenberghe \\ \footnotesize Presentation by: Martin Hellkvist}
@@ -77,5 +79,26 @@ We need to solve the following linear equation system
 		\tilde{\mA}_\text{adj}(\mathcal{S}^{-1}(\tilde{\mA}(\Delta x)))=\tilde{\mA}_\text{adj}(\mathcal{S}^{-1}(\tilde{R}_{21})) -r
 	\end{equation}
 	which gives $ \Delta Z $ and in turn $ \Delta U $ and $ \Delta V $
+\end{frame}
+
+\begin{frame}{Key step}
+Solving for $ \Delta x $ looks complicated
+	\begin{equation}
+		\tilde{\mA}_\text{adj}(\mathcal{S}^{-1}(\tilde{\mA}(\Delta x)))=\tilde{\mA}_\text{adj}(\mathcal{S}^{-1}(\tilde{R}_{21})) -r
+	\end{equation}
+However ,
+\begin{equation}
+	\mathcal{S}(X) = \mathcal{L}(\mathcal{L}_\text{adj}(X))
+\end{equation}
+where the inverses is ``simply'' defined as:
+\begin{equation}
+	\mathcal{L}^{-1}_{ij} = 
+	\left\{\begin{matrix*}[l]
+		(X_{ij} - \sigma_i\sigma_jX_{ji})/\sqrt{1-\sigma_i^2\sigma_j^2},\, &i<j\\
+		X_{ii}/\sqrt{1+\sigma_i^2},\,&i=j\\
+		X_{ij},\,&i>j
+	\end{matrix*}\right.
+\end{equation}
+and its adjoint $ \mathcal{L}_\text{adj}^{-1} $ in a similar fashion
 \end{frame}
 \end{document}
