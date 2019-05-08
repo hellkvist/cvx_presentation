@@ -40,6 +40,17 @@
 		&\mA(x) = x_1A_1+x_2A_2+\dots+x_nA_n
 	\end{split}
 	\end{equation}
+	is convex:
+	\begin{equation}
+	\begin{split}
+		&||\mA(\alpha x + (1 - \alpha)y) - B||_* = \\
+		&||\alpha(\mA(x) - B)+(1-\alpha)(\mA(y)-B)||_* \leq\\
+		&||\alpha(\mA(x) - B)||_*+||(1-\alpha)(\mA(y)-B)||_*=\\
+		&\alpha||\mA(x) - B||_*+(1-\alpha)||\mA(y)-B||_*
+	\end{split}
+	\end{equation}
+\end{frame}
+\begin{frame}{Nuclear Norm Approximation Problem}
 	Can be cast as
 	\begin{equation}
 	\begin{split}
@@ -50,7 +61,7 @@
 		\end{bmatrix} \succeq 0
 	\end{split}
 	\end{equation}
-	Where $ U = U^T \in \mathbb{R}^{q\times q}$ and $ V=V^T \in \mathbb{R}^{p \times p} $ are new variables, and the problem is an SDP which is very difficult to solve for $ q \approx 100 $ and $ p\approx 100 $ for general purpose interior-point methods
+	Where $ U = U^T \in \mathbb{R}^{q\times q}$ and $ V=V^T \in \mathbb{R}^{p \times p} $ are new variables, and the problem is an SDP which is very difficult to solve for $ q \approx 100 $ and $ p\approx 100 $ for general purpose interior-point methods where $ \mathcal{O}(p^2q^2n) $
 \end{frame}
 
 \begin{frame}{Custom Interior-Point Method}
@@ -100,5 +111,16 @@ where the inverses is ``simply'' defined as:
 	\end{matrix*}\right.
 \end{equation}
 and its adjoint $ \mathcal{L}_\text{adj}^{-1} $ in a similar fashion
+\end{frame}
+\begin{frame}{Complexity reduction}
+	\begin{itemize}
+		\item From $ \mathcal{O}(p^2q^2n) $ to $ \mathcal{O}(pqn^2) $
+		\item Works for large problems
+	\end{itemize}
+	 \begin{figure}[h]
+		\includegraphics[width=0.55\linewidth]{Fig_1}
+		\caption{Solving randomly generated problems for $p=q=n $}
+		\label{}
+	\end{figure}
 \end{frame}
 \end{document}
