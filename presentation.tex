@@ -3,8 +3,8 @@
 \usepackage{mathtools}
 \setbeamertemplate{footline}[frame number]
 
-\title{Interior-Point Method for Nuclear Norm Approximation with Application to System Identification}
-\author{Author: Zhang Liu and Lieven Vandenberghe \\ \footnotesize Presentation by: Martin Hellkvist}
+\title{[13] Interior-Point Method for Nuclear Norm Approximation with Application to System Identification}
+\author{Author: Zhang Liu and Lieven Vandenberghe, 2009\\ \footnotesize Presentation by: Martin Hellkvist}
 
 \newcommand{\mA}{\mathcal{A}}
 
@@ -15,11 +15,11 @@
 \begin{frame}{Summary}
 	\begin{itemize}
 		\item Nuclear Norm: $ ||X||_* =$ sum of singular values
-		\item $ \min ||X||_* $ typically has low rank solutions
+		\item $ \min\,||X||_* $ typically has low rank solutions
 		\begin{itemize}
 			\item Can be cast as Semidefinite Program (SDP)
 		\end{itemize}
-		\item $ \min \text{rank}(X) $ is NP-hard
+		\item $ \min\,\text{rank}(X) $ is NP-hard
 		\begin{itemize}
 			\item System Identification
 			\item Machine Learning
@@ -41,14 +41,16 @@
 	\end{split}
 	\end{equation}
 	is convex:
-	\begin{equation}
-	\begin{split}
-		&||\mA(\alpha x + (1 - \alpha)y) - B||_* = \\
-		&||\alpha(\mA(x) - B)+(1-\alpha)(\mA(y)-B)||_* \leq\\
-		&||\alpha(\mA(x) - B)||_*+||(1-\alpha)(\mA(y)-B)||_*=\\
-		&\alpha||\mA(x) - B||_*+(1-\alpha)||\mA(y)-B||_*
-	\end{split}
-	\end{equation}
+	\visible<2->{
+		\begin{equation}
+		\begin{split}
+			&||\mA(\alpha x + (1 - \alpha)y) - B||_* = \\
+			&||\alpha(\mA(x) - B)+(1-\alpha)(\mA(y)-B)||_* \leq\\
+			&||\alpha(\mA(x) - B)||_*+||(1-\alpha)(\mA(y)-B)||_*=\\
+			&\alpha||\mA(x) - B||_*+(1-\alpha)||\mA(y)-B||_*
+		\end{split}
+		\end{equation}
+	}
 \end{frame}
 \begin{frame}{Nuclear Norm Approximation Problem}
 	Can be cast as
@@ -101,16 +103,18 @@ However ,
 \begin{equation}
 	\mathcal{S}(X) = \mathcal{L}(\mathcal{L}_\text{adj}(X))
 \end{equation}
-where the inverses is ``simply'' defined as:
-\begin{equation}
-	\mathcal{L}^{-1}_{ij} = 
-	\left\{\begin{matrix*}[l]
-		(X_{ij} - \sigma_i\sigma_jX_{ji})/\sqrt{1-\sigma_i^2\sigma_j^2},\, &i<j\\
-		X_{ii}/\sqrt{1+\sigma_i^2},\,&i=j\\
-		X_{ij},\,&i>j
-	\end{matrix*}\right.
-\end{equation}
-and its adjoint $ \mathcal{L}_\text{adj}^{-1} $ in a similar fashion
+\visible<2->{
+	where the inverses is ``simply'' defined as:
+	\begin{equation}
+		\mathcal{L}^{-1}(X)_{ij} = 
+		\left\{\begin{matrix*}[l]
+			(X_{ij} - \sigma_i\sigma_jX_{ji})/\sqrt{1-\sigma_i^2\sigma_j^2},\, &i<j\\
+			X_{ii}/\sqrt{1+\sigma_i^2},\,&i=j\\
+			X_{ij},\,&i>j
+		\end{matrix*}\right.
+	\end{equation}
+	and its adjoint $ \mathcal{L}_\text{adj}^{-1} $ in a similar fashion
+}
 \end{frame}
 \begin{frame}{Complexity reduction}
 	\begin{itemize}
@@ -122,5 +126,31 @@ and its adjoint $ \mathcal{L}_\text{adj}^{-1} $ in a similar fashion
 		\caption{Solving randomly generated problems for $p=q=n $}
 		\label{}
 	\end{figure}
+\end{frame}
+
+\begin{frame}{Subspace Identification}
+	Given inputs $ u(t) $ and output measurements $ y_\text{meas}(t) $ we can find low rank state space representation by
+	\begin{equation}
+	\min ||YU^\perp||_* + \gamma \sum_{t=0}^N ||y(t)-y_\text{meas}(t)||_2^2
+	\end{equation}
+	\visible<2->{
+		\includegraphics[width=.45\linewidth]{Fig_4}
+	}
+	\visible<3->{
+		\hfill
+		\includegraphics[width=.45\linewidth]{Fig_6b}
+	}
+\end{frame}
+\begin{frame}{Shortcomings and Extensions}
+Shortcomings
+	\begin{itemize}
+		\item Lackluster comments on numerical results
+		\item Unclear what is ``the trick''
+	\end{itemize}
+Extensions
+	\begin{itemize}
+		\item How does quadratic terms affect the equations?
+		\item Least Norm Problem (adds $ \mathcal{F}(X)=g $ to SDP constraints)
+	\end{itemize}
 \end{frame}
 \end{document}
